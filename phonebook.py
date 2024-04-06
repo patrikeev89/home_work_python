@@ -60,6 +60,30 @@ def update_contact(name, new_phone):
     conn.commit()
     conn.close()
 
+# Изменение e-mail контакта по имени
+def update_contact_email(name, new_email):
+    conn = sq.connect('phonebook.db')
+    c = conn.cursor()
+    c.execute("UPDATE contacts SET email=? WHERE name=?", (new_email, name))
+    conn.commit()
+    conn.close()
+
+# Изменение даты рождения контакта по имени
+def update_contact_birthday(name, new_birthday):
+    conn = sq.connect('phonebook.db')
+    c = conn.cursor()
+    c.execute("UPDATE contacts SET birthday=? WHERE name=?", (new_birthday, name))
+    conn.commit()
+    conn.close()
+
+# Изменение текстовой заметки контакта по имени
+def update_contact_note(name, new_note):
+    conn = sq.connect('phonebook.db')
+    c = conn.cursor()
+    c.execute("UPDATE contacts SET note=? WHERE name=?", (new_note, name))
+    conn.commit()
+    conn.close()
+
 # Создаем базу данных, если её нет
 create_database()
 
@@ -82,5 +106,17 @@ create_database()
 # update_contact("Сидоров Сидор", "+79220040004")
 # print(all_contacts())
 
-print("\nПоиск контакта с номером телефона '+79220020002':")
-print(search_contact_by_phone("+79220020002"))
+# print("\nПоиск контакта с номером телефона '+79220020002':")
+# print(search_contact_by_phone("+79220020002"))
+
+# print("\nИзменение e-mail для 'Сидоров Сидор':")
+# update_contact_email("Сидоров Сидор", "sidorov_s@mail.ru")
+# print(all_contacts())
+
+# print("\nИзменение даты рождения для 'Петров Петр':")
+# update_contact_birthday("Петров Петр", "1989-08-01")
+# print(all_contacts())
+
+# print("\nИзменение заметки для 'Иванов Иван':")
+# update_contact_note("Иванов Иван", "Новая заметка")
+# print(all_contacts())
