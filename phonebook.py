@@ -84,6 +84,14 @@ def update_contact_note(name, new_note):
     conn.commit()
     conn.close()
 
+# Удаление всех контактов
+def delete_all_contacts():
+    conn = sq.connect('phonebook.db')
+    c = conn.cursor()
+    c.execute("DELETE FROM contacts")
+    conn.commit()
+    conn.close()
+
 # Создаем базу данных, если её нет
 create_database()
 
@@ -120,3 +128,7 @@ create_database()
 # print("\nИзменение заметки для 'Иванов Иван':")
 # update_contact_note("Иванов Иван", "Новая заметка")
 # print(all_contacts())
+
+print("\nУдаление всех контактов:")
+delete_all_contacts()
+print(all_contacts())
