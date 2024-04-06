@@ -1,19 +1,19 @@
 import sqlite3 as sq
 
-# Создания базы данных, если она еще не существует
+# Создание базы данных, если она еще не существует
 def create_database():
     conn = sq.connect('phonebook.db')
     c = conn.cursor()
     c.execute('''CREATE TABLE IF NOT EXISTS contacts
-                 (id INTEGER PRIMARY KEY, name TEXT, phone TEXT)''')
+                 (id INTEGER PRIMARY KEY, name TEXT, phone TEXT, email TEXT, birthday TEXT, note TEXT)''')
     conn.commit()
     conn.close()
 
 # Добавления контакта
-def add_contact(name, phone):
+def add_contact(name, phone, email=None, birthday=None, note=None):
     conn = sq.connect('phonebook.db')
     c = conn.cursor()
-    c.execute("INSERT INTO contacts (name, phone) VALUES (?, ?)", (name, phone))
+    c.execute("INSERT INTO contacts (name, phone, email, birthday, note) VALUES (?, ?, ?, ?, ?)", (name, phone, email, birthday, note))
     conn.commit()
     conn.close()
 
@@ -31,6 +31,15 @@ def search_contact(name):
     conn = sq.connect('phonebook.db')
     c = conn.cursor()
     c.execute("SELECT * FROM contacts WHERE name=?", (name,))
+    contact = c.fetchone()
+    conn.close()
+    return contact
+
+# Поиск контакта по номеру телефона
+def search_contact_by_phone(phone):
+    conn = sq.connect('phonebook.db')
+    c = conn.cursor()
+    c.execute("SELECT * FROM contacts WHERE phone=?", (phone,))
     contact = c.fetchone()
     conn.close()
     return contact
@@ -69,6 +78,9 @@ create_database()
 # delete_contact("Петров Петр")
 # print(all_contacts())
 
-print("\nИзменение номера телефона для 'Сидоров Сидор':")
-update_contact("Сидоров Сидор", "+79220040004")
-print(all_contacts())
+# print("\nИзменение номера телефона для 'Сидоров Сидор':")
+# update_contact("Сидоров Сидор", "+79220040004")
+# print(all_contacts())
+
+print("\nПоиск контакта с номером телефона '+79220020002':")
+print(search_contact_by_phone("+79220020002"))
